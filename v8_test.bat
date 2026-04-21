@@ -23,7 +23,7 @@ if errorlevel 1 (
   copy /Y "%dir%\v8\out\release\third_party_zlib.dll" . >nul 2>nul
 )
 
-call cl.exe /EHsc /clr /std:c++20 /I"%dir%\v8" /I"%dir%\v8\include" ^
+call cl.exe /EHsc /std:c++20 /Zc:__cplusplus /I"%dir%\v8" /I"%dir%\v8\include" ^
   /Fe".\hello-world" "%dir%\v8\samples\hello-world.cc" ^
   /link %linkLibs% ^
   /DEFAULTLIB:advapi32.lib /DEFAULTLIB:dbghelp.lib /DEFAULTLIB:winmm.lib
