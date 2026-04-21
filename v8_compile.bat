@@ -66,13 +66,24 @@ call gn args ".\out\release" --list > "%dir%\gn-args_%os%.txt"
 type "%dir%\gn-args_%os%.txt"
 echo ==================== Build args end ====================
 
-call ninja -C ".\out\release" -j %NUMBER_OF_PROCESSORS% v8_monolith
+set "ninjaTarget=v8_monolith"
+findstr /C:"is_component_build=true" "%dir%\args\%os%.gn" >nul 2>nul
+if not errorlevel 1 (
+  set "ninjaTarget=v8 v8_libplatform v8_libbase"
+)
+
+call ninja -C ".\out\release" -j %NUMBER_OF_PROCESSORS% %ninjaTarget%
 if errorlevel 1 (
   echo Build failed.
   exit /b %errorlevel%
 )
 
-dir ".\out\release\obj\v8_*.lib"
+if "%ninjaTarget%"=="v8_monolith" (
+  dir ".\out\release\obj\v8_*.lib"
+) else (
+  dir ".\out\release\v8*.dll"
+  dir ".\out\release\v8*.dll.lib"
+)
 
 popd
 

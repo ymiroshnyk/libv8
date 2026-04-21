@@ -9,7 +9,7 @@ jobs:
   check:
     name: Check V8 Version
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'kuoruan'
+    if: github.repository_owner == 'ymiroshnyk'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
