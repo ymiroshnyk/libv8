@@ -24,6 +24,20 @@ runs:
       with:
         python-version: '3.12'
 
+    - name: Select Xcode
+      shell: bash
+      run: |
+        # Pin Xcode to avoid SDK incompatibilities with V8 build system.
+        # List available versions and pick the latest 16.x that is not beta.
+        ls /Applications/ | grep Xcode | sort -V
+        if [ -d "/Applications/Xcode_16.2.app" ]; then
+          sudo xcode-select -s /Applications/Xcode_16.2.app
+        elif [ -d "/Applications/Xcode_16.1.app" ]; then
+          sudo xcode-select -s /Applications/Xcode_16.1.app
+        fi
+        xcode-select -p
+        xcodebuild -version
+
     - name: Setup Build Tools
       shell: bash
       run: |
